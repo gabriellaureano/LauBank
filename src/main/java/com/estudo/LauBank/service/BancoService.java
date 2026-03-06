@@ -1,6 +1,8 @@
 package com.estudo.LauBank.service;
 
 import com.estudo.LauBank.dto.TransferirResponseDTO;
+import com.estudo.LauBank.exceptions.SaldoInsuficienteException;
+import com.estudo.LauBank.exceptions.UsuarioNaoEncontradoException;
 import com.estudo.LauBank.model.Transacao;
 import com.estudo.LauBank.model.Usuario;
 import com.estudo.LauBank.repository.TransacaoRepository;
@@ -34,10 +36,10 @@ public class BancoService {
     public TransferirResponseDTO transferir(Long idOrigem, Long idDestino, double valor){
 
         Usuario origem = usuarioRepository.findById(idOrigem)
-                .orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
+                .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuario não encontrado"));
 
         Usuario destino = usuarioRepository.findById(idDestino)
-                .orElseThrow(() -> new RuntimeException("Usuario nao encontrado"));
+                .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuario não encontrado"));
 
         if (origem.sacar(valor)){
             LocalDateTime dateTime = LocalDateTime.now();
@@ -59,7 +61,7 @@ public class BancoService {
             );
         }
         else {
-            throw new RuntimeException("Saldo insuficiente");
+            throw new SaldoInsuficienteException("Saldo insuficiente");
         }
 
 
