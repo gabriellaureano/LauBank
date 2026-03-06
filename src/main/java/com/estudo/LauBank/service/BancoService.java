@@ -1,6 +1,8 @@
 package com.estudo.LauBank.service;
 
 import com.estudo.LauBank.dto.TransferirResponseDTO;
+import com.estudo.LauBank.dto.UsuarioCreateDTO;
+import com.estudo.LauBank.dto.UsuarioResponseDTO;
 import com.estudo.LauBank.exceptions.SaldoInsuficienteException;
 import com.estudo.LauBank.exceptions.UsuarioNaoEncontradoException;
 import com.estudo.LauBank.model.Transacao;
@@ -25,12 +27,26 @@ public class BancoService {
         this.transacaoRepository = transacaoRepository;
     }
 
-    public List<Usuario> listar(){
-        return usuarioRepository.findAll();
+    public List<UsuarioResponseDTO> listar(){
+        return usuarioRepository.findAll().stream()
+                .map(usuario -> new UsuarioResponseDTO(
+                        usuario.getId(),
+                        usuario.getNome(),
+                        usuario.getSaldo()
+                ))
+                .toList();
     }
 
-    public Usuario cadastrar(Usuario usuario){
-        return usuarioRepository.save(usuario);
+    public UsuarioResponseDTO cadastrar(UsuarioCreateDTO usuario){
+
+        Usuario user = new Usuario(usuario.getNome(), usuario.getEmail());
+        usuarioRepository.save(user);
+
+        return new UsuarioResponseDTO(
+                user.getId(),
+                user.getNome(),
+                user.getSaldo()
+        );
     }
 
     public TransferirResponseDTO transferir(Long idOrigem, Long idDestino, double valor){

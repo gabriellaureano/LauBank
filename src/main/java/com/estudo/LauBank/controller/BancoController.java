@@ -2,6 +2,8 @@ package com.estudo.LauBank.controller;
 
 import com.estudo.LauBank.dto.TransacaoResponseDTO;
 import com.estudo.LauBank.dto.TransferirResponseDTO;
+import com.estudo.LauBank.dto.UsuarioCreateDTO;
+import com.estudo.LauBank.dto.UsuarioResponseDTO;
 import com.estudo.LauBank.model.Usuario;
 import com.estudo.LauBank.service.BancoService;
 import com.estudo.LauBank.service.TransacaoService;
@@ -24,12 +26,13 @@ public class BancoController {
     }
 
     @GetMapping
-    public List<Usuario> listar(){
+    public List<UsuarioResponseDTO> listar(){
         return bancoService.listar();
     }
 
+
     @PostMapping("/users")
-    public Usuario cadastrar(@Valid @RequestBody Usuario usuario){
+    public UsuarioResponseDTO cadastrar(@Valid @RequestBody UsuarioCreateDTO usuario){
         return bancoService.cadastrar(usuario);
     }
 
