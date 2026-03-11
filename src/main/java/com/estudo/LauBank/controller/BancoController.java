@@ -36,7 +36,7 @@ public class BancoController {
     }
 
     @PostMapping("/transacoes")
-    public TransferirRequestDTO tranferir(@RequestBody TransferirRequestDTO transferirRequestDTO){
+    public TransferirRequestDTO tranferir(@Valid @RequestBody TransferirRequestDTO transferirRequestDTO){
         return bancoService.transferir(
                 transferirRequestDTO.getIdOrigem(),
                 transferirRequestDTO.getIdDestino(),
