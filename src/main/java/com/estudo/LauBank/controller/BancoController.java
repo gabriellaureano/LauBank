@@ -1,10 +1,9 @@
 package com.estudo.LauBank.controller;
 
 import com.estudo.LauBank.dto.TransacaoResponseDTO;
-import com.estudo.LauBank.dto.TransferirResponseDTO;
-import com.estudo.LauBank.dto.UsuarioCreateDTO;
+import com.estudo.LauBank.dto.TransferirRequestDTO;
+import com.estudo.LauBank.dto.UsuarioRequestDTO;
 import com.estudo.LauBank.dto.UsuarioResponseDTO;
-import com.estudo.LauBank.model.Usuario;
 import com.estudo.LauBank.service.BancoService;
 import com.estudo.LauBank.service.TransacaoService;
 import jakarta.validation.Valid;
@@ -25,23 +24,23 @@ public class BancoController {
         this.transacaoService = transacaoService;
     }
 
-    @GetMapping
+    @GetMapping("/usuarios")
     public List<UsuarioResponseDTO> listar(){
         return bancoService.listar();
     }
 
 
-    @PostMapping("/users")
-    public UsuarioResponseDTO cadastrar(@Valid @RequestBody UsuarioCreateDTO usuario){
+    @PostMapping("/usuarios")
+    public UsuarioResponseDTO cadastrar(@Valid @RequestBody UsuarioRequestDTO usuario){
         return bancoService.cadastrar(usuario);
     }
 
-    @PostMapping
-    public TransferirResponseDTO tranferir(@RequestBody TransferirResponseDTO transferirDTO){
+    @PostMapping("/transacoes")
+    public TransferirRequestDTO tranferir(@RequestBody TransferirRequestDTO transferirRequestDTO){
         return bancoService.transferir(
-                transferirDTO.getIdOrigem(),
-                transferirDTO.getIdDestino(),
-                transferirDTO.getValor()
+                transferirRequestDTO.getIdOrigem(),
+                transferirRequestDTO.getIdDestino(),
+                transferirRequestDTO.getValor()
         );
     }
 
@@ -50,7 +49,7 @@ public class BancoController {
         return transacaoService.buscarTransacoes();
     }
 
-    @GetMapping("/transacoes/{id}")
+    @GetMapping("/usuarios/{id}/transacoes")
     public List<TransacaoResponseDTO> listarTransacoesId(@PathVariable Long id){
         return transacaoService.buscarTransacoesId(id);
     }

@@ -1,9 +1,6 @@
 package com.estudo.LauBank.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-
-public class TransferirResponseDTO {
+public class TransferirRequestDTO {
 
     private Long idOrigem;
 
@@ -11,13 +8,13 @@ public class TransferirResponseDTO {
 
     private double valor;
 
-    public TransferirResponseDTO(Long idOrigem, Long idDestino, double valor) {
+    public TransferirRequestDTO(Long idOrigem, Long idDestino, double valor) {
         this.idOrigem = idOrigem;
         this.idDestino = idDestino;
         this.valor = valor;
     }
 
-    public TransferirResponseDTO() {
+    public TransferirRequestDTO() {
     }
 
     public Long getIdOrigem() {

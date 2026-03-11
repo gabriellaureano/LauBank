@@ -1,7 +1,7 @@
 package com.estudo.LauBank.service;
 
-import com.estudo.LauBank.dto.TransferirResponseDTO;
-import com.estudo.LauBank.dto.UsuarioCreateDTO;
+import com.estudo.LauBank.dto.TransferirRequestDTO;
+import com.estudo.LauBank.dto.UsuarioRequestDTO;
 import com.estudo.LauBank.dto.UsuarioResponseDTO;
 import com.estudo.LauBank.exceptions.SaldoInsuficienteException;
 import com.estudo.LauBank.exceptions.UsuarioNaoEncontradoException;
@@ -37,7 +37,7 @@ public class BancoService {
                 .toList();
     }
 
-    public UsuarioResponseDTO cadastrar(UsuarioCreateDTO usuario){
+    public UsuarioResponseDTO cadastrar(UsuarioRequestDTO usuario){
 
         Usuario user = new Usuario(usuario.getNome(), usuario.getEmail());
         usuarioRepository.save(user);
@@ -49,7 +49,7 @@ public class BancoService {
         );
     }
 
-    public TransferirResponseDTO transferir(Long idOrigem, Long idDestino, double valor){
+    public TransferirRequestDTO transferir(Long idOrigem, Long idDestino, double valor){
 
         Usuario origem = usuarioRepository.findById(idOrigem)
                 .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuario não encontrado"));
@@ -70,7 +70,7 @@ public class BancoService {
                     dataFormatada
             );
             transacaoRepository.save(transacao);
-            return new TransferirResponseDTO(
+            return new TransferirRequestDTO(
                     transacao.getOrigem().getId(),
                     transacao.getDestino().getId(),
                     transacao.getValor()
