@@ -1,38 +1,53 @@
 # 🏦 LauBank - API de Gestão Bancária
 
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/spring--boot-%236DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white)
-
 API REST para operações bancárias, focada em automação de saldo inicial, transferências entre contas e auditoria de transações.
 
----
-
-## 📍 Endpoints da API (Base: `/laubank`)
-
-| Categoria | Método | Endpoint | Descrição |
-| :--- | :---: | :--- | :--- |
-| **Usuário** | `GET` | `/` | Lista todos os usuários cadastrados. |
-| **Usuário** | `POST` | `/users` | Cadastra novo usuário (**Saldo inicial: 500.00**). |
-| **Financeiro** | `POST` | `/` | Executa transferência entre contas. |
-| **Auditoria** | `GET` | `/transacoes` | Lista o log global de todas as transações. |
-| **Auditoria** | `GET` | `/transacoes/{id}` | Filtra o histórico de transações de um usuário. |
+Desenvolvida com **Java 17** e **Spring Boot**.
 
 ---
 
-## 🚀 Exemplos de Requisição (JSON)
+## 📍 Endpoints da API
 
-### 1. Cadastrar Usuário
-**Endpoint:** `POST /laubank/users`  
-> O saldo não é enviado no cadastro; o sistema inicializa automaticamente cada nova conta com **R$ 500,00**.
+**Base URL:** `/laubank`
+
+| Categoria  | Método | Endpoint                    | Descrição                                           |
+| ---------- | ------ | --------------------------- | --------------------------------------------------- |
+| Usuário    | GET    | `/usuarios`                 | Lista todos os usuários cadastrados                 |
+| Usuário    | POST   | `/usuarios`                 | Cadastra novo usuário (saldo inicial: **R$500.00**) |
+| Financeiro | POST   | `/transacoes`               | Executa transferência entre contas                  |
+| Auditoria  | GET    | `/transacoes`               | Lista o log global de todas as transações           |
+| Auditoria  | GET    | `/usuarios/{id}/transacoes` | Histórico de transações de um usuário               |
+
+---
+
+## 🚀 Exemplos de Requisição
+
+### 1️⃣ Cadastrar Usuário
+
+**Endpoint**
+
+POST /laubank/usuarios
+
+O sistema inicializa automaticamente cada nova conta com **R$500,00**.
+
+**JSON**
 
 ```json
 {
   "nome": "Gabriel Silva",
   "email": "gabriel@gmail.com"
 }
+```
 
-### 2. Realizar Transferência
-**Endpoint:** `POST /laubank`
+---
+
+### 2️⃣ Realizar Transferência
+
+**Endpoint**
+
+POST /laubank/transacoes
+
+**JSON**
 
 ```json
 {
@@ -40,23 +55,60 @@ API REST para operações bancárias, focada em automação de saldo inicial, tr
   "idDestino": 2,
   "valor": 100.00
 }
+```
 
-🧠 Lógica e Fundamentos
-Saldo Automatizado: Lógica de negócio no cadastro para garantir integridade financeira inicial (Welcome Bonus).
+---
 
-Relacionamento JPA: Vinculação automática entre a transação realizada e os perfis de usuário envolvidos (@ManyToOne).
+## ⚠️ Tratamento de Erros (Bean Validation)
 
-Arquitetura Clean: Separação clara entre as camadas de Controller, Service e Repository.
+A API utiliza um **GlobalExceptionHandler** para retornar erros de validação de forma padronizada.
 
-DTOs: Utilização de Records para tráfego de dados seguro e imutável.
+Caso os dados enviados sejam inválidos, a resposta seguirá este padrão:
 
-🏗️ Roadmap de Desenvolvimento
-[ ] Consumo de API Externa: Implementar OpenFeign para buscar endereços via ViaCEP.
+```json
+{
+  "status": 400,
+  "erro": "E-mail inválido",
+  "ajuda": "Certifique-se de que o e-mail contém '@' e um domínio válido."
+}
+```
 
-[ ] Dockerização: Configurar ambiente PostgreSQL via Docker Compose.
+---
 
-[ ] Segurança: Adicionar validações de saldo insuficiente antes de processar transferências.
+## 🧠 Lógica e Fundamentos
 
-[ ] Tratamento de Exceções: Criar um GlobalExceptionHandler para respostas de erro limpas.
+### Saldo Automatizado
 
-Desenvolvido por Gabriel Laureano
+Durante o cadastro, cada conta inicia com **R$500.00**, garantindo integridade financeira inicial.
+
+### Bean Validation
+
+Uso de anotações como:
+
+* `@Valid`
+* `@NotBlank`
+* `@Email`
+
+para garantir qualidade e validação dos dados recebidos.
+
+### Arquitetura em Camadas
+
+Separação clara entre:
+
+```
+Controller
+Service
+DTO
+Repository
+```
+
+### Tratamento Global de Erros
+
+Centralização das exceções usando **GlobalExceptionHandler**, garantindo respostas HTTP padronizadas.
+
+---
+
+
+## 👨‍💻 Autor
+
+Desenvolvido por **Gabriel Laureano**
