@@ -39,7 +39,7 @@ public class BancoService {
 
     public UsuarioResponseDTO cadastrar(UsuarioRequestDTO usuario){
 
-        Usuario user = new Usuario(usuario.getNome(), usuario.getEmail());
+        Usuario user = new Usuario(usuario.nome(), usuario.email());
         usuarioRepository.save(user);
 
         return new UsuarioResponseDTO(
